@@ -298,7 +298,13 @@ var applyOrientationToPage = function(page, args){
     // _refreshCSS will verify against the Scope to make sure all the correct styles are
     // applied. If they are already applied, it will short circuit and not
     // do anything more.
-	page._refreshCss();
+    if (typeof page._refreshCss === 'function') {
+	    // TNS 3.2-
+        page._refreshCss();
+    } else {
+	    // TNS 3.3+
+	    page._onCssStateChange();
+    }
 
 	if (args != null) {
 		view.eachDescendant(page, resetChildrenRefreshes);

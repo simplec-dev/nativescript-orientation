@@ -51,6 +51,7 @@ If you want to manually control the orientation, then you will need to require i
 Well, guess what Cascading means in CSS?  
 Yes, this means this works now: 
 
+#### Plain Awesome NativeScript (PAN)
 ```css
 StackLayout {
   background-color: red;
@@ -61,13 +62,25 @@ StackLayout {
 }
 ```
 
+#### NativeScript Angular (NAN)
+```css
+StackLayout {
+    background-color : red;
+}
+
+/deep/ .landscape StackLayout  {
+    background-color: green;
+}
+```
+
 So in portrait the background would be red, in landscape the color is green.
+Please note in Angular, you need to prefix the `.landscape` with `/deep/` for it to work!  
+
 
 ## Why use this?
 You can set ALL the normal CSS values this way include width, height, font-size.
 By using the css to control any normal items and your own page's exports.orientation to control anything not controllable by css you can change the look completely between Landscape/Portrait.
 
-** ANGULAR NOTE: ** The `.landscape` only partially works in Angular; Angular unfortunately rewrites the CSS and so your `.landscape StackLayout` might become `.landscape32 StackLayout43` which of course then the plugin adding .landscape won't have any effect at that point.  The only css it will effect is anything in the app wide css file as it is not rewritten. 
 
 
 ### You can add to any page you need it the following Function:
@@ -80,7 +93,7 @@ Since at this moment some items can't be controlled by CSS like orientation on S
 
 Please note, there is also a built in event in NativeScript called `orientationChanged` event.  The differences between these is that the built in event only gets called when the orientation changes;
 This event is called on every screen navigation and any time the device rotates; allowing you to setup any rotation stuff during the creation of the screen.   
-** ANGULAR NOTE: The `exports.orientation` function event does NOT work in Angular at all **
+** ANGULAR NOTE: The `exports.orientation` function event does NOT work in Angular since Angular does not have the same concept.  **
    
 
 
