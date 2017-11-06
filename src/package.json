@@ -2,7 +2,8 @@
   "name": "nativescript-orientation",
   "version": "2.0.1",
   "description": "A NativeScript plugin to deal with Declarative UI and Screen Orientation",
-  "main": "orientation",
+	"main": "orientation",
+	"typings": "index.d.ts",
   "nativescript": {
 	"platforms": {
 		"android": "3.0.0",
@@ -56,6 +57,11 @@
 	  "name": "Zsolt Racz",
 	  "email": "rzsolt2@hotmail.com",
 	  "url": "https://github.com/zsolt-racz"
+	},
+	{
+		"name": "Brad Martin",
+		"email": "bmartin@nstudio.io",
+		"url": "https://github.com/bradmartin"
 	}
   ],
   "license": {
