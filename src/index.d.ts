@@ -18,7 +18,7 @@ export function setOrientation(
     | "landscapeleft"
     | "landscaperight"
     | DeviceOrientation,
-  animation: boolean
+  animation?: boolean
 ): void;
 
 /**
