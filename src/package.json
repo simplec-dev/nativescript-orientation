@@ -66,12 +66,12 @@
 						"name": "Brad Martin",
 						"email": "bmartin@nstudio.io",
 						"url": "https://github.com/bradmartin"
-                },
-                {
-                        "name": "Brad Linard",
-                        "email": "brad.linard@idelata.com",
-                        "url": "https://github.com/blinard"
-                }
+				},
+				{
+						"name": "Brad Linard",
+						"email": "brad.linard@idelata.com",
+						"url": "https://github.com/blinard"
+				}
 		],
 		"license": {
 				"type": "MIT",
@@ -82,7 +82,5 @@
 		},
 		"homepage": "https://github.com/nathanaela/nativescript-orientation",
 		"readmeFilename": "README.md",
-		"devDependencies": {
-				"tns-core-modules": "^3.4.0"
-		}
+		"devDependencies": {}
 }
