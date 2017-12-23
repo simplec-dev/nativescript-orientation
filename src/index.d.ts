@@ -1,9 +1,7 @@
-import { DeviceOrientation } from "tns-core-modules/ui/enums";
-
 /**
- * Type for the OrientationAppliers used within this plugin.
+ * Type for the OrientationAppliers used within this plugin. Note: currentOrientation should be a value from tns_core_modules/ui/enums/DeviceOrientation
  */
-export type OrientationApplierCallback = (currentOrientation: DeviceOrientation) => void;
+export type OrientationApplierCallback = (currentOrientation: string) => void;
 
 /**
  * Adds a new OrientationApplier to be called whenever orientation needs to be applied.
@@ -20,8 +18,9 @@ export function removeOrientationApplier(orientationApplier: OrientationApplierC
 /**
  * Get the current orientation of the device.
  * @param sensors [boolean] - If true, will return you sensor values on android verses screen size calculation.
+ * @returns [string] - a value from tns_core_modules/ui/enums/DeviceOrientation
  */
-export function getOrientation(sensors?: boolean): DeviceOrientation;
+export function getOrientation(sensors?: boolean): string;
 
 /**
  * Sets app window to (or from) full screen mode.
@@ -31,7 +30,7 @@ export function setFullScreen(shouldBeFullScreen: boolean): void;
 
 /**
  * Set the orientation of the device.
- * @param direction ["portrait" | "landscape" | "landscapeleft" | "landscaperight" | enum DeviceOrientation] - The orientation/direction to set the device.
+ * @param direction ["portrait" | "landscape" | "landscapeleft" | "landscaperight"] - The orientation/direction to set the device.
  * @param animation [boolean] - *** iOS Only *** - this will disable the orientation change animation.
  */
 export function setOrientation(
@@ -39,8 +38,7 @@ export function setOrientation(
     | "portrait"
     | "landscape"
     | "landscapeleft"
-    | "landscaperight"
-    | DeviceOrientation,
+    | "landscaperight",
   animation?: boolean
 ): void;
 
