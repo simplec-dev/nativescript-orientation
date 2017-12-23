@@ -38,7 +38,7 @@ orientation.addOrientationApplier = function(newOrientationApplier) {
     var existingApplier = orientationAppliers.find((oa) => { return oa === newOrientationApplier; });
     if (existingApplier) return;
 
-    orientationApplier.push(newOrientationApplier);
+    orientationAppliers.push(newOrientationApplier);
 };
 
 /**
