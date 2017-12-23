@@ -1,6 +1,23 @@
 import { DeviceOrientation } from "tns-core-modules/ui/enums";
 
 /**
+ * Type for the OrientationAppliers used within this plugin.
+ */
+export type OrientationApplierCallback = (currentOrientation: DeviceOrientation) => void;
+
+/**
+ * Adds a new OrientationApplier to be called whenever orientation needs to be applied.
+ * @param newOrientationApplier [OrientationApplierCallback] - The OrientationApplier that you would like to add.
+ */
+export function addOrientationApplier(newOrientationApplier: OrientationApplierCallback): void;
+
+/**
+ * Removes an OrientationApplier from the list of OrientationAppliers to be called whenever orientation needs to be applied.
+ * @param orientationApplier [OrientationApplierCallback] - The OrientationApplier that you would like to remove.
+ */
+export function removeOrientationApplier(orientationApplier: OrientationApplierCallback): void
+
+/**
  * Get the current orientation of the device.
  * @param sensors [boolean] - If true, will return you sensor values on android verses screen size calculation.
  */
