@@ -23,7 +23,7 @@ var utils = require('utils/utils');
 require('nativescript-globalevents');
 require('nativescript-dom');
 
-var allowRotation = true, forceRotation = false;
+var allowRotation = true, forceRotation = false, fullScreen = false, abHidden=false;
 var orientation = { };
 
 module.exports = orientation;
@@ -116,6 +116,39 @@ if (global.android) {
 
 	};
 
+	orientation.setFullScreen = function(value) {
+
+            var View = android.view.View;
+            var WindowManager = android.view.WindowManager;
+            var window = application.android.startActivity.getWindow();
+
+            fullScreen = !!value;
+
+            if (fullScreen) {
+                window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY );
+            } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            }
+/*
+            if (fullScreen) {
+                if (!frame.topmost().currentPage.actionBarHidden && !abHidden) {
+                    abHidden = true;
+                    frame.topmost().currentPage.actionBarHidden = true;
+                }
+            } else if (abHidden) {
+                abHidden = false;
+                frame.topmost().currentPage.actionBarHidden = false;
+            }
+*/
+    };
+
 } else if (global.NSObject && global.UIDevice) {
 
 	setupiOSController();
@@ -172,6 +205,12 @@ if (global.android) {
 	orientation.enableRotation = function() { allowRotation = true; };
 
 	orientation.disableRotation = function() { allowRotation = false; };
+
+	orientation.setFullScreen = function(setFullScreen) {
+	    fullScreen = !!setFullScreen;
+	    var app = iosProperty(UIApplication, UIApplication.sharedApplication);
+	    app.setStatusBarHiddenWithAnimation(fullScreen, UIStatusBarAnimation.Slide);
+    };
 
 	var resetLandscapedLock = false;
 	application.on('suspend', function() {
@@ -345,6 +384,15 @@ function getContext() {
 	return java.lang.Class.forName("android.app.ActivityThread").getMethod("currentApplication", null).invoke(null, null);
 }
 
+function iosProperty(theClass, theProperty) {
+    if (typeof theProperty === "function") {
+        // xCode 7 and below
+        return theProperty.call(theClass);
+    } else {
+        // xCode 8+
+        return theProperty;
+    }
+}
 
 // Setup Events
 Page.on(Page.navigatingToEvent, handleNavigatingTo);

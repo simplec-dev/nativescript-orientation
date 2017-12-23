@@ -136,6 +136,10 @@ This will disable automatic orientation support and lock it to the current orien
   orientation.disableRotation(); // The screen will no longer rotate 
 ```
 
+
+#### orientation.setFullScreen(value) - true/false
+
+
 ### Contributors
 - Ashton Cummings
 - Dick Smith
