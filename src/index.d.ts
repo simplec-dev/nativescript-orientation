@@ -7,6 +7,12 @@ import { DeviceOrientation } from "tns-core-modules/ui/enums";
 export function getOrientation(sensors?: boolean): DeviceOrientation;
 
 /**
+ * Sets app window to (or from) full screen mode.
+ * @param shouldBeFullScreen [boolean] - If true, will make app full screen. If false, will make app not full screen.
+ */
+export function setFullScreen(shouldBeFullScreen: boolean): void;
+
+/**
  * Set the orientation of the device.
  * @param direction ["portrait" | "landscape" | "landscapeleft" | "landscaperight" | enum DeviceOrientation] - The orientation/direction to set the device.
  * @param animation [boolean] - *** iOS Only *** - this will disable the orientation change animation.
