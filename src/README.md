@@ -140,13 +140,86 @@ This will disable automatic orientation support and lock it to the current orien
 #### orientation.setFullScreen(value) - true/false
 
 
+### Orientation Appliers
+
+Orientation Appliers serve as hooks into the orientation application logic for *nativescript-orientation*. Whenever *nativescript-orientation* applies its orientation logic it also calls any Orientation Appliers that you've added. This allows you to easily execute your own logic when orientation needs to be considered/applied. Orientation Appliers are simple functions that receive 1 parameter: the current orientation in string form (the same as is returned from the **orientation.getOrientation()** method). Methods to add and remove Orientation Appliers, as well as examples, are supplied below.
+
+
+#### orientation.addOrientationApplier(orientationApplierCallback)
+This adds an Orientation Applier
+```js
+var MyModule = (function() {
+  var orientation = require('nativescript-orientation');
+
+  this.boundProperty = "some value";
+
+  function myCallback(currentOrientation) {
+      if (currentOrientation === DeviceOrientation.landscape) {
+        // Do something landscap-y
+        return;
+      }
+
+      // Do something portrait-y
+      // Assume this includes updating boundProperty on this module's scope.
+      this.boundProperty = "a different value";
+  }
+
+  orientation.addOrientationApplier(myCallback.bind(this));
+
+  return {
+    boundProperty: this.boundProperty
+  };
+})();
+
+exports.MyModule = MyModule;
+```
+
+#### orientation.removeOrientationApplier(orientationApplierCallback)
+This removes an Orientation Applier from the set of Orientation Appliers that will be executed.
+```js
+var MyModule = (function() {
+  var orientation = require('nativescript-orientation');
+
+  this.boundProperty = "some value";
+
+  function myCallback(currentOrientation) {
+      if (currentOrientation === DeviceOrientation.landscape) {
+        // Do something landscap-y
+        return;
+      }
+
+      // Do something portrait-y
+      // Assume this includes updating boundProperty on this module's scope.
+      this.boundProperty = "a different value";
+  }
+
+  var myOrientationApplier = myCallback.bind(this);
+  orientation.addOrientationApplier(myOrientationApplier);
+
+  // Somewhere later in your code...
+  orientation.removeOrientationApplier(myOrientationApplier);
+
+  return {
+    boundProperty: this.boundProperty
+  };
+})();
+
+exports.MyModule = MyModule;
+```
+
+
+Two key things to remember when using this functionality:
+1. Use ```myCallback.bind(this)``` when adding your Orientation Applier (this preserves the correct 'this' scope for your callback method).
+2. In Nativescript Angular, the orientation change event does not trigger an Angular Change Detection cycle. Because of this you'll need to manually trigger Change Detection within your Orientation Applier by injecting **ChangeDetectorRef** from **@angular/core** into your Component and calling ```this.changeDetectorRef.detectChanges()``` from within your Orientation Applier;
+
+
 ### Contributors
 - Ashton Cummings
 - Dick Smith
 - Dimitar Tachev
 - Emiel Beeksma
 - Zsolt Racz
-
+- Brad Linard
 
 
 ### Sponsor
