@@ -25,8 +25,30 @@ require('nativescript-dom');
 
 var allowRotation = true, forceRotation = false, fullScreen = false, abHidden=false;
 var orientation = { };
+var orientationAppliers = [];
 
 module.exports = orientation;
+
+/**
+ * Function to add a new orientation applier callback
+ */
+orientation.addOrientationApplier = function(newOrientationApplier) {
+    if (!newOrientationApplier) return;
+
+    var existingApplier = orientationAppliers.find((oa) => { return oa === newOrientationApplier; });
+    if (existingApplier) return;
+
+    orientationAppliers.push(newOrientationApplier);
+};
+
+/**
+ * Function to remove an orientation applier callback
+ */
+orientation.removeOrientationApplier = function(orientationApplier) {
+    if (!orientationApplier) return;
+
+    orientationAppliers = orientationAppliers.filter((oa) => { return oa !== orientationApplier; });
+};
 
 /**
  * Helper function hooked to the Application to get the current orientation
@@ -354,10 +376,11 @@ var applyOrientationToPage = function(page, args){
 };
 
 /**
- * This handles a Orientation change event
+ * This handles an Orientation change event
  * @param args
  */
 var handleOrientationChange = function(args) {
+    callOrientationAppliers();
 
 	// If the topmost frame doesn't exist we can't do anything...
 	if (!frame.topmost()) { return; }
@@ -369,13 +392,24 @@ var handleOrientationChange = function(args) {
 };
 
 var handleNavigatingTo = function(args){
-	var targetPage = args.object;
+    callOrientationAppliers();
 
-	if(targetPage){
+    var targetPage = args.object;
+	if (targetPage){
 		applyOrientationToPage(targetPage, {force: true});
 	}
-
 };
+
+function callOrientationAppliers() {
+    if (!orientationAppliers || orientationAppliers.length <= 0) return;
+
+    var currentOrientation = orientation.getOrientation();
+    if (!currentOrientation) return;
+
+    orientationAppliers.forEach((oa) => {
+        oa(currentOrientation);
+    });
+}
 
 function getContext() {
 	var ctx = java.lang.Class.forName("android.app.AppGlobals").getMethod("getInitialApplication", null).invoke(null, null);
