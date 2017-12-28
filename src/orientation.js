@@ -5,7 +5,7 @@
  * I do contract work in most languages, so let me solve your problems!
  *
  * Any questions please feel free to email me or put a issue up on the github repo
- * Version 2.0.0                                      Nathan@master-technology.com
+ * Version 2.0.1                                      Nathan@master-technology.com
  *********************************************************************************/
 "use strict";
 
@@ -35,7 +35,7 @@ module.exports = orientation;
 orientation.addOrientationApplier = function(newOrientationApplier) {
     if (!newOrientationApplier) return;
 
-    var existingApplier = orientationAppliers.find((oa) => { return oa === newOrientationApplier; });
+    var existingApplier = orientationAppliers.find(function(oa) { return oa === newOrientationApplier; });
     if (existingApplier) return;
 
     orientationAppliers.push(newOrientationApplier);
@@ -47,7 +47,7 @@ orientation.addOrientationApplier = function(newOrientationApplier) {
 orientation.removeOrientationApplier = function(orientationApplier) {
     if (!orientationApplier) return;
 
-    orientationAppliers = orientationAppliers.filter((oa) => { return oa !== orientationApplier; });
+    orientationAppliers = orientationAppliers.filter(function (oa) { return oa !== orientationApplier; });
 };
 
 /**
@@ -61,9 +61,9 @@ if (global.android) {
         // context.getSystemService("window").getDefaultDisplay().getOrientation();
         // context.getSystemService("window").getDefaultDisplay().getRotation();
 
-        var orientation = getContext().getResources().getConfiguration().orientation;
+        var currentOrientation = getContext().getResources().getConfiguration().orientation;
 
-        switch (orientation) {
+        switch (currentOrientation) {
             case 2: /* LANDSCAPE */
                 return enums.DeviceOrientation.landscape;
             case 1: /* PORTRAIT */
@@ -112,26 +112,26 @@ if (global.android) {
 		var activity = application.android.foregroundActivity;
 
 		var val = value.toLowerCase();
-		var orientation;
+		var newOrientation;
 		switch (val) {
 			case 'landscape':
-                orientation = 6; // SCREEN_ORIENTATION_SENSOR_LANDSCAPE = 6
+				newOrientation = 6; // SCREEN_ORIENTATION_SENSOR_LANDSCAPE = 6
                 break;
 
 			case 'landscaperight':
-				orientation = 0; // SCREEN_ORIENTATION_LANDSCAPE = 0
+				newOrientation = 0; // SCREEN_ORIENTATION_LANDSCAPE = 0
 				break;
 
 			case 'landscapeleft':
-				orientation = 8; // SCREEN_ORIENTATION_REVERSE_LANDSCAPE = 9
+				newOrientation = 8; // SCREEN_ORIENTATION_REVERSE_LANDSCAPE = 9
 				break;
 
 			case 'portrait':
 			default:
-				orientation = 1; // SCREEN_ORIENTATION_PORTRAIT = 1
+				newOrientation = 1; // SCREEN_ORIENTATION_PORTRAIT = 1
 				break;
 		}
-		activity.setRequestedOrientation(orientation);
+		activity.setRequestedOrientation(newOrientation);
 
 		// Animation: https://developer.android.com/reference/android/view/WindowManager.LayoutParams.html#ROTATION_ANIMATION_JUMPCUT
 		// and https://developer.android.com/reference/android/view/WindowManager.LayoutParams.html#rotationAnimation
@@ -373,6 +373,8 @@ var applyOrientationToPage = function(page, args){
 	if (page.exports && typeof page.exports.orientation === "function") {
 		page.exports.orientation({landscape: isLandscape, object: page});
 	}
+
+	callOrientationAppliers(page, isLandscape);
 };
 
 /**
@@ -380,8 +382,6 @@ var applyOrientationToPage = function(page, args){
  * @param args
  */
 var handleOrientationChange = function(args) {
-    callOrientationAppliers();
-
 	// If the topmost frame doesn't exist we can't do anything...
 	if (!frame.topmost()) { return; }
 	var currentPage = frame.topmost().currentPage;
@@ -392,23 +392,18 @@ var handleOrientationChange = function(args) {
 };
 
 var handleNavigatingTo = function(args){
-    callOrientationAppliers();
-
     var targetPage = args.object;
 	if (targetPage){
 		applyOrientationToPage(targetPage, {force: true});
 	}
 };
 
-function callOrientationAppliers() {
-    if (!orientationAppliers || orientationAppliers.length <= 0) return;
+function callOrientationAppliers(page, isLandscape) {
+    if (!orientationAppliers || orientationAppliers.length <= 0) { return; }
 
-    var currentOrientation = orientation.getOrientation();
-    if (!currentOrientation) return;
-
-    orientationAppliers.forEach((oa) => {
-        oa(currentOrientation);
-    });
+    for (var i=0;i<orientationAppliers.length;i++) {
+    	orientationAppliers[i]({landscape: isLandscape, object: page});
+	}
 }
 
 function getContext() {

@@ -64,17 +64,29 @@ StackLayout {
 
 #### NativeScript Angular (NAN)
 ```css
-StackLayout {
-    background-color : red;
-}
 
 /deep/ .landscape StackLayout  {
     background-color: green;
 }
+
+```
+
+I was recently informed the `:host` is a better options, as it causes less potential isolation side effects in Angular.
+```css
+StackLayout {
+    background-color : red;
+}
+
+
+.landscape :host StackLayout {
+  background-color: green;
+}
+
 ```
 
 So in portrait the background would be red, in landscape the color is green.
-Please note in Angular, you need to prefix the `.landscape` with `/deep/` for it to work!  
+Please note in Angular, you need to prefix the `.landscape` with `/deep/` for it to work!
+In addition, for Angular I was recently informed that `:host` is also a valid option, I have not tested this; but I wanted to get it documented.   
 
 
 ## Why use this?
@@ -93,7 +105,7 @@ Since at this moment some items can't be controlled by CSS like orientation on S
 
 Please note, there is also a built in event in NativeScript called `orientationChanged` event.  The differences between these is that the built in event only gets called when the orientation changes;
 This event is called on every screen navigation and any time the device rotates; allowing you to setup any rotation stuff during the creation of the screen.   
-** ANGULAR NOTE: The `exports.orientation` function event does NOT work in Angular since Angular does not have the same concept.  **
+**ANGULAR NOTE:** The `exports.orientation` function event does NOT work in Angular since Angular does not have the same concept.  You can use the `orientation.addOrientationApplier` instead. 
    
 
 
@@ -144,6 +156,11 @@ This will disable automatic orientation support and lock it to the current orien
 
 Orientation Appliers serve as hooks into the orientation application logic for *nativescript-orientation*. Whenever *nativescript-orientation* applies its orientation logic it also calls any Orientation Appliers that you've added. This allows you to easily execute your own logic when orientation needs to be considered/applied. Orientation Appliers are simple functions that receive 1 parameter: the current orientation in string form (the same as is returned from the **orientation.getOrientation()** method). Methods to add and remove Orientation Appliers, as well as examples, are supplied below.
 
+#### oprientationApplierCallback 
+##### args.landscape = true | false
+##### args.object = the current page
+The callback receives the same arguments as the exports.orientation event in normal NativeScript.
+
 
 #### orientation.addOrientationApplier(orientationApplierCallback)
 This adds an Orientation Applier
@@ -153,14 +170,15 @@ var MyModule = (function() {
 
   this.boundProperty = "some value";
 
-  function myCallback(currentOrientation) {
-      if (currentOrientation === DeviceOrientation.landscape) {
+
+  function myCallback(args) {
+      if (args.landscape) {
         // Do something landscap-y
         return;
       }
 
       // Do something portrait-y
-      // Assume this includes updating boundProperty on this module's scope.
+      // Assume this includes updating boundProperty on this module's scope.      
       this.boundProperty = "a different value";
   }
 
@@ -180,16 +198,14 @@ This removes an Orientation Applier from the set of Orientation Appliers that wi
 var MyModule = (function() {
   var orientation = require('nativescript-orientation');
 
-  this.boundProperty = "some value";
-
-  function myCallback(currentOrientation) {
-      if (currentOrientation === DeviceOrientation.landscape) {
+ function myCallback(args) {
+      if (args.landscape) {
         // Do something landscap-y
         return;
       }
 
       // Do something portrait-y
-      // Assume this includes updating boundProperty on this module's scope.
+      // Assume this includes updating boundProperty on this module's scope.      
       this.boundProperty = "a different value";
   }
 
@@ -221,9 +237,3 @@ Two key things to remember when using this functionality:
 - Zsolt Racz
 - Brad Linard
 
-
-### Sponsor
-
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/HXrmpSuyowGyBLzwEVbqXdDa/NathanaelA/nativescript-orientation'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/HXrmpSuyowGyBLzwEVbqXdDa/NathanaelA/nativescript-orientation.svg' />
-</a>

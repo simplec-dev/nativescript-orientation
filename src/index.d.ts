@@ -1,7 +1,5 @@
-/**
- * Type for the OrientationAppliers used within this plugin. Note: currentOrientation should be a value from tns_core_modules/ui/enums/DeviceOrientation
- */
-export type OrientationApplierCallback = (currentOrientation: string) => void;
+/** args is a object {object: (current page), landscape: boolean} value **/
+export type OrientationApplierCallback = (args: any) => void;
 
 /**
  * Adds a new OrientationApplier to be called whenever orientation needs to be applied.

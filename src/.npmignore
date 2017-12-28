@@ -6,4 +6,4 @@ docs/
 *.tar
 *.tgz
 .npmignore
-
+node_modules/
