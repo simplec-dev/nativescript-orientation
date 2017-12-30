@@ -1,5 +1,12 @@
+import { Page } from "ui/page";
+
+export interface OrientationApplierOptions {
+    object?: Page,
+    landscape: boolean
+}
+
 /** args is a object {object: (current page), landscape: boolean} value **/
-export type OrientationApplierCallback = (args: any) => void;
+export type OrientationApplierCallback = (args: OrientationApplierOptions) => void;
 
 /**
  * Adds a new OrientationApplier to be called whenever orientation needs to be applied.
