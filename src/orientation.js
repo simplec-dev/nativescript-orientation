@@ -12,12 +12,12 @@
 /* jshint camelcase: false */
 /* global UIDevice, UIDeviceOrientation, UIView, getElementsByTagName, android */
 
-var application = require('application');
-var view = require('ui/core/view');
-var enums = require('ui/enums');
-var frame = require('ui/frame');
-var Page = require('ui/page').Page;
-var utils = require('utils/utils');
+var application = require('tns-core-modules/application');
+var view = require('tns-core-modules/ui/core/view');
+var enums = require('tns-core-modules/ui/enums');
+var frame = require('tns-core-modules/ui/frame');
+var Page = require('tns-core-modules/ui/page').Page;
+var utils = require('tns-core-modules/utils/utils');
 
 // Load the helper plugins
 require('nativescript-globalevents');
