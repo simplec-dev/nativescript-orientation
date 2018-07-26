@@ -1,5 +1,5 @@
 /**********************************************************************************
- * (c) 2016-2017, Master Technology
+ * (c) 2016-2018, Master Technology
  * Licensed under the MIT license or contact me for a Support or Commercial License
  *
  * I do contract work in most languages, so let me solve your problems!
@@ -74,7 +74,7 @@ if (global.android) {
 
 
         // If for some reason the orientation code above doesn't figure it out; we use sizes
-        const metrics = new android.util.DisplayMetrics();
+        var metrics = new android.util.DisplayMetrics();
         context.getSystemService(android.content.Context.WINDOW_SERVICE).getDefaultDisplay().getRealMetrics(metrics);
         if (metrics.widthPixels > metrics.heightPixels) {
             return enums.DeviceOrientation.landscape;
