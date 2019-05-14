@@ -10,7 +10,7 @@ https://docs.nativescript.org/ui/components.
     http://docs.nativescript.org/ui/action-bar
     -->
     <Page.actionBar>
-        <ActionBar title="Demo Orientation" icon="" class="action-bar"/>
+        <ActionBar title="Demo Orientation (Page 2)" icon="" class="action-bar"/>
     </Page.actionBar>
     <!--
     The StackLayout stacks UI components on the screen—either vertically or horizontally.

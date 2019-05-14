@@ -33,10 +33,6 @@ exports.lock = function() {
     }
 };
 
-exports.openMT = function() {
-    const utils = require('tns-core-modules/utils/utils');
-    utils.openUrl("https://master.technology");
-};
 
 
 exports.orientation = function(args) {
@@ -45,5 +41,5 @@ exports.orientation = function(args) {
 
 exports.nav = function() {
     var frame = require('tns-core-modules/ui/frame');
-    frame.topmost().navigate({ moduleName: "main-page2", clearHistory: true });
+    frame.topmost().navigate({ moduleName: "main-page", clearHistory: true });
 };
