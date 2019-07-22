@@ -17,7 +17,6 @@ var view = require('tns-core-modules/ui/core/view');
 var enums = require('tns-core-modules/ui/enums');
 var frame = require('tns-core-modules/ui/frame');
 var Page = require('tns-core-modules/ui/page').Page;
-var utils = require('tns-core-modules/utils/utils');
 
 // Load the helper plugins
 require('nativescript-globalevents');
@@ -175,7 +174,7 @@ if (global.android) {
 
 	setupiOSController();
 	orientation.getOrientation = function () {
-		var device = utils.ios.getter(UIDevice, UIDevice.currentDevice);
+		var device = UIDevice.currentDevice;
 
 		switch (device.orientation) {
 			case UIDeviceOrientation.UIDeviceOrientationLandscapeRight:
@@ -186,7 +185,7 @@ if (global.android) {
 				return enums.DeviceOrientation.portrait;
 			default:
 				// Since we have a up/Down orientation, we need to see what the statusbar is set to to get the actual current device orientation
-				var appOrientation = utils.ios.getter(UIApplication, UIApplication.sharedApplication).statusBarOrientation;
+				var appOrientation = UIApplication.sharedApplication.statusBarOrientation;
 				if (appOrientation === 1 || appOrientation === 2) { return enums.DeviceOrientation.portrait; }
 				else { return enums.DeviceOrientation.landscape; }
 		}
@@ -201,7 +200,7 @@ if (global.android) {
 		} else {
 			newOrientation = NSNumber.numberWithInt(UIInterfaceOrientationPortrait);
 		}
-		var device = utils.ios.getter(UIDevice, UIDevice.currentDevice);
+		var device = UIDevice.currentDevice;
 		if (animation === false) {
 			UIView.setAnimationsEnabled(false);
 		}
@@ -217,7 +216,6 @@ if (global.android) {
 		}
 		device.setValueForKey(newOrientation, "orientation");
 		forceRotation = false;
-
 
 		if (animation === false) {
 			UIView.setAnimationsEnabled(true);
@@ -255,7 +253,6 @@ if (global.android) {
 // Depreciated; but supported for backwards compatibility
 application.getOrientation = orientation.getOrientation;
 
-
 /**
  * Searchs for a prototype in the prototype chain
  * @param source - Source element
@@ -281,7 +278,6 @@ function setupiOSController() {
 	}
 
 	try {
-
 		var app = curFrame.ios.controller;
 		var proto = findRootPrototype(app, "shouldAutorotate");
 		if (proto ===  null) {
