@@ -1,5 +1,5 @@
 {
-  "name": "nativescript-orientation-free",
+  "name": "nativescript-orientation-ssi",
   "version": "2.2.4",
   "description": "A NativeScript plugin to deal with Declarative UI and Screen Orientation. Since the original plugin requires a subscription now, this plugin is my attempt to maintain it to the point where it does not break.",
   "main": "orientation",

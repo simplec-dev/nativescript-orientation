@@ -215,7 +215,7 @@ if (global.android) {
 			device.setValueForKey(tempOrientation, "orientation");
 		}
 		device.setValueForKey(newOrientation, "orientation");
-		forceRotation = false;
+		//forceRotation = false;
 
 		if (animation === false) {
 			UIView.setAnimationsEnabled(true);
